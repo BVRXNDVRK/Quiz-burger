@@ -16,31 +16,6 @@
   const prevButton = document.querySelector('#prev');
   const sendButton = document.querySelector('#send');
 
-  let myVar = 3;
-
-  // if(myVar < 3) {
-  //   console.log('myVar < 3');
-  // }
-
-  // if (myVar === 3) {
-  //   console.log('myVar = 3');
-  // }
-
-  // if (myVar > 3) {
-  //   console.log('myVar > 3');
-  // }
-
-  switch(true) {
-    case (myVar === 1):
-      console.log(' < 3');
-      break;
-    case (myVar === 3):
-      console.log(' = 3');
-      break;
-    default: 
-      console.log('None');
-  }
-
   // OBJECTS&MASSIVES
   const questions = [
     {
@@ -154,6 +129,45 @@
         questionTitle.textContent = questions[indexQuestion].question;
         renderAnswers(indexQuestion);
       }
+
+      // HOMEWORK <------------------------------
+      switch(numberQuestion) {
+      case 0:
+        prevButton.classList.add('d-none');
+        nextButton.classList.remove('d-none');
+        break;
+
+      case 1:
+        prevButton.classList.remove('d-none');
+        break;
+
+      case (questions.length):
+        nextButton.classList.add('d-none');
+        questionTitle.textContent = 'СПАСИБО!';
+        sendButton.classList.remove('d-none');
+        formAnswers.innerHTML = `
+        <div>
+          <label for="numberPhone">Пожалуйста, ведите ваш номер телефона :)</label>
+          <input type="phone" class="form-control" id="numberPhone">
+        </div>
+        `
+        break;
+
+      case (questions.length - 1):
+        sendButton.classList.add('d-none');
+        nextButton.classList.remove('d-none');
+        break;
+
+      case (questions.length + 1):
+        sendButton.classList.add('d-none');
+        prevButton.classList.add('d-none');
+        formAnswers.textContent = 'Ожидайте, скоро с вами свяжется наш менеджер!';
+        setTimeout(() => {
+          modalBlock.classList.remove('d-block');
+        }, 2000);
+        break;
+
+      }
     }
     renderQuestions(numberQuestion);
 
@@ -175,43 +189,16 @@
       finalAnswers.push(obj)
       console.log(finalAnswers);
     }
-    
-    prevButton.classList.add('d-none');
-    sendButton.classList.add('d-none');
-    nextButton.classList.remove('d-none');
-    
+  
     nextButton.onclick = () => {
       checkAnswer();
       numberQuestion++;
       renderQuestions(numberQuestion);
-
-      if (numberQuestion < (questions.length - 1) ) {
-      prevButton.classList.remove('d-none');
-      }
-
-      if (numberQuestion === (questions.length) ) {
-      nextButton.classList.add('d-none');
-      questionTitle.textContent = 'СПАСИБО!';
-      sendButton.classList.remove('d-none');
-      formAnswers.innerHTML = `
-      <div>
-        <label for="numberPhone">Пожалуйста, ведите ваш номер телефона :)</label>
-        <input type="phone" class="form-control" id="numberPhone">
-      </div>
-      `
-      }
     }
 
     prevButton.onclick = () => {
       numberQuestion--;
       renderQuestions(numberQuestion);
-      if (numberQuestion < (questions.length) ) {
-      nextButton.classList.remove('d-none');
-      sendButton.classList.add('d-none');
-      }
-      if (numberQuestion == 0) {
-      prevButton.classList.add('d-none');
-    }
     }
 
     sendButton.addEventListener('click', () => {
@@ -219,14 +206,6 @@
       numberQuestion++;
       renderQuestions(numberQuestion);
       console.log(finalAnswers);
-
-      if(numberQuestion === questions.length + 1) {
-        formAnswers.textContent = 'Ожидайте, скоро с вами свяжется наш менеджер!';
-        setTimeout(() => {
-          modalBlock.classList.remove('d-block');
-        }, 2000);
-      }
     })
-    
   }
 })
